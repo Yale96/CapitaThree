@@ -42,6 +42,13 @@ public class Seeder implements ApplicationRunner{
 
     @Override
     public void run(ApplicationArguments aa) {
+      
+        for(Subject s: subjectRequest.getAllFromTwo())
+        {
+            Subject toPersist = new Subject(s.getNaam(), s.getOmschrijving(), s.getAgeLimit());
+            subjectRepository.save(toPersist);
+            String ss = "Debug";
+        }
         
       for(User u: userRequest.getAllFromTwo())
         {
@@ -49,13 +56,16 @@ public class Seeder implements ApplicationRunner{
             for(Subject s: userRequest.getAllSubjectsPerUserFromTwo(u.getName()))
             {
                 List<Subject> toAdd = new ArrayList<>();
-                
-                toAdd.add(s);
+                Subject addHere = subjectRepository.findSingleSubjectByNaam(s.getNaam());
+                toAdd.add(addHere);
                 toPersist.setFollowingSubjects(toAdd);
-                //Subject sub = subjectRepository.findOne(subjectRepository.findSingleSubjectByNaam(s.getNaam()).getId());
-                subjectRepository.save(s);
+//                if(subjectRepository.findSingleSubjectByNaam(s.getNaam()) == null)
+//                {
+//                    subjectRepository.save(s);
+//                }
+//                else
+//                    subjectRepository.save(s);
             }
-            
             userRepository.save(toPersist);
         }
     }
