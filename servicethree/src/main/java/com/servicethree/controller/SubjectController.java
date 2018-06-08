@@ -38,23 +38,25 @@ public class SubjectController {
         userRequest = new UserRequest();
     }
     
-    // TEST URL: http://localhost:8092/subjects
+    // TEST URL: http://localhost:8094/subjects
     @RequestMapping(method = RequestMethod.GET)
     public List<Subject> findAllSubjects() {
         return subjectRepository.findAll();
     }
     
+    // TEST URL: http://localhost:8094/subjects/getAll
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
     public List<Subject> getAllFromOne() {
         return subjectRequest.getAllFromTwo();
     }
     
+    // TEST URL: http://localhost:8094/subjects/getAllByName?name=Yannick
     @RequestMapping(value = "/getAllByName", method = RequestMethod.GET)
     public List<Subject> getAllFromOneByName(@RequestParam("naam") String naam) {
         return userRequest.getAllSubjectsPerUserFromTwo(naam);
     }
     
-    //     TEST URL: http://localhost:8094/subjects/refresh
+    // TEST URL: http://localhost:8094/subjects/refresh
     @RequestMapping(value = "/refresh", method = RequestMethod.GET)
     public List<Subject> refreshSubjects() {
         List<Subject> getAll = subjectRequest.getAllFromTwo();
