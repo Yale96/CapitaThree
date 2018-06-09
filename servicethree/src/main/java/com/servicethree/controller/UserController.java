@@ -6,8 +6,10 @@
 package com.servicethree.controller;
 
 import com.servicethree.entity.request.UserRequest;
+import com.servicethree.entitys.Aanbeveling;
 import com.servicethree.entitys.Subject;
 import com.servicethree.entitys.User;
+import com.servicethree.repository.AanbevelingRepository;
 import com.servicethree.repository.SubjectRepository;
 import com.servicethree.repository.UserRepository;
 import java.util.ArrayList;
@@ -29,12 +31,14 @@ public class UserController {
     private UserRepository userRepository;
     private SubjectRepository subjectRepository;
     private UserRequest userRequest;
+    private AanbevelingRepository aanbevelingRepository;
 
     @Autowired
-    public UserController(UserRepository userRepository, SubjectRepository subjectRepository) {
+    public UserController(UserRepository userRepository, SubjectRepository subjectRepository, AanbevelingRepository aanbevelingRepository) {
         this.userRepository = userRepository;
         this.subjectRepository = subjectRepository;
         userRequest = new UserRequest();
+        this.aanbevelingRepository = aanbevelingRepository;
     }
 
     // TEST URL: http://localhost:8094/users
@@ -54,22 +58,50 @@ public class UserController {
         return returnList;
     }
 
-//     TEST URL: http://localhost:8094/users/refresh
+////     TEST URL: http://localhost:8094/users/refresh
+//    @RequestMapping(value = "/refresh", method = RequestMethod.GET)
+//    public User refreshFollowingSubjects(@RequestParam("naam") String naam) {
+//        User u = userRepository.findOne(userRepository.findByName(naam).getId());
+//        List<Subject> getAllPerUser = userRequest.getAllSubjectsPerUserFromTwo(naam);
+//        List<Subject> savedObjects = new ArrayList<>();
+//        for (Subject s : getAllPerUser) {
+//            for (Subject subject : subjectRepository.findSubjectByNaam(s.getNaam())) {
+//                Subject toSave = subjectRepository.findOne(subject.getId());
+//                subjectRepository.save(toSave);
+//                savedObjects.add(toSave);
+//            }
+//        }
+//        u.setFollowingSubjects(savedObjects);
+//        userRepository.save(u);
+//        return u;
+//    }
+    
+    // TEST URL: http://localhost:8094/users/refresh
     @RequestMapping(value = "/refresh", method = RequestMethod.GET)
-    public User refreshFollowingSubjects(@RequestParam("naam") String naam) {
-        User u = userRepository.findOne(userRepository.findByName(naam).getId());
-        List<Subject> getAllPerUser = userRequest.getAllSubjectsPerUserFromTwo(naam);
-        List<Subject> savedObjects = new ArrayList<>();
-        for (Subject s : getAllPerUser) {
-            for (Subject subject : subjectRepository.findSubjectByNaam(s.getNaam())) {
-                Subject toSave = subjectRepository.findOne(subject.getId());
-                subjectRepository.save(toSave);
-                savedObjects.add(toSave);
-            }
-        }
-        u.setFollowingSubjects(savedObjects);
-        userRepository.save(u);
-        return u;
+    public User refreshAanbevelingen(@RequestParam("naam") String naam)
+    {
+         List<Aanbeveling> toAdd = new ArrayList<>();
+         User u = userRepository.findOne(userRepository.findByName(naam).getId());
+         List<Aanbeveling> aanbevelingen = aanbevelingRepository.findAanbevelingenByNaam(naam);
+         for(Aanbeveling a: aanbevelingen)
+         {
+             Aanbeveling addToList = new Aanbeveling();
+             addToList.setTo(a.getTo());
+             addToList.setFrom(a.getFrom());
+             addToList.setSubject(a.getSubject());
+             addToList.setWaarom(a.getWaarom());
+             aanbevelingRepository.save(addToList);
+             String s = "Debug";
+             toAdd.add(addToList);
+         }
+         for(Aanbeveling a: toAdd)
+         {
+             aanbevelingRepository.save(a);
+             u.getAanbevelingen().add(a);
+         }
+         u.setAanbevelingen(aanbevelingen);
+         userRepository.save(u);
+         return u;
     }
     
 //    public User recommendSubject(String from, String subjectName, String to)

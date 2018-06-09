@@ -6,6 +6,7 @@
 package com.servicethree.repository;
 
 import com.servicethree.entitys.Aanbeveling;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +19,7 @@ public interface AanbevelingRepository extends JpaRepository<Aanbeveling, Long> 
     
     @Query("SELECT a FROM Aanbeveling a WHERE LOWER(a.to.name) = LOWER(:name)")
     public Aanbeveling findAanbevelingByNaam(@Param("name") String naam);
+    
+    @Query("SELECT a FROM Aanbeveling a WHERE LOWER(a.to.name) = LOWER(:name)")
+    public List<Aanbeveling> findAanbevelingenByNaam(@Param("name") String naam);
 }
