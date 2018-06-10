@@ -15,6 +15,7 @@ import com.servicethree.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Yannick van Leeuwen
  */
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("users")
 public class UserController {
 

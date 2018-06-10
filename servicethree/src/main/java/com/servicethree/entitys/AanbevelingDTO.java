@@ -5,11 +5,13 @@
  */
 package com.servicethree.entitys;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Yannick van Leeuwen
  */
-public class AanbevelingDTO {
+public class AanbevelingDTO implements Serializable{
     private String to;
     
     private String from;
@@ -25,4 +27,38 @@ public class AanbevelingDTO {
         this.subject = a.getSubject().getNaam();
         this.waarom = a.getWaarom();
     }
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getWaarom() {
+        return waarom;
+    }
+
+    public void setWaarom(String waarom) {
+        this.waarom = waarom;
+    }
+    
+    
 }
