@@ -29,24 +29,24 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("aanbevelingen")
 public class AanbevelingController {
-    
+
     private UserRepository userRepository;
     private AanbevelingRepository aanbevelingRepository;
     private SubjectRepository subjectRepository;
-    
+
     @Autowired
-    public AanbevelingController(UserRepository userRepository, AanbevelingRepository aanbevelingRepository, SubjectRepository subjectRepository){
+    public AanbevelingController(UserRepository userRepository, AanbevelingRepository aanbevelingRepository, SubjectRepository subjectRepository) {
         this.userRepository = userRepository;
         this.aanbevelingRepository = aanbevelingRepository;
         this.subjectRepository = subjectRepository;
     }
-    
+
     // TEST URL: http://localhost:8094/aanbevelingen
     @RequestMapping(method = RequestMethod.GET)
     public List<Aanbeveling> findAllSubjects() {
         return aanbevelingRepository.findAll();
     }
-    
+
     //TEST URL: http://localhost:8094/aanbevelingen/create?toName=Yannick&fromName=Dennis&subjectName=Een&waarom=omdat ik je lief vindt
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public Aanbeveling createAanbeveling(@RequestParam("toName") String toName, @RequestParam("fromName") String fromName, @RequestParam("subjectName") String subjectName, @RequestParam("waarom") String waarom) {
@@ -54,25 +54,25 @@ public class AanbevelingController {
         User from = userRepository.findByName(fromName);
         Subject s = subjectRepository.findSingleSubjectByNaam(subjectName);
         Aanbeveling a = new Aanbeveling();
-        a.setTo(to);
-        a.setFrom(from);
-        a.setSubject(s);
-        a.setWaarom(waarom);
-        System.out.println(a);
-        aanbevelingRepository.save(a);
-        String ss = "Debug";
-        
+        if (! toName.equals(fromName)) {
+            a.setTo(to);
+            a.setFrom(from);
+            a.setSubject(s);
+            a.setWaarom(waarom);
+            System.out.println(a);
+            aanbevelingRepository.save(a);
+            String ss = "Debug";
+        }
         return a;
     }
-    
+
     // TEST URL: http://localhost:8094/aanbevelingen/getByName?name=Yannick
     @RequestMapping(value = "/getByName", method = RequestMethod.GET)
     public List<AanbevelingDTO> getByName(@RequestParam("naam") String naam) {
         List<AanbevelingDTO> dto = new ArrayList<>();
         User u = userRepository.findByName(naam);
         List<Aanbeveling> aanbevelingen = aanbevelingRepository.findAanbevelingenByNaam(u.getName());
-        for(Aanbeveling a: aanbevelingen)
-        {
+        for (Aanbeveling a : aanbevelingen) {
             AanbevelingDTO adto = new AanbevelingDTO(a);
             dto.add(adto);
         }
