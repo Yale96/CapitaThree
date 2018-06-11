@@ -1,5 +1,6 @@
 package com.servicethree.repository;
 
+import com.servicethree.entitys.Subject;
 import com.servicethree.entitys.User;
 import java.util.List;
 import javax.transaction.Transactional;
@@ -18,4 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     
     @Query("SELECT u FROM User u WHERE LOWER(u.name) = LOWER(:name)")
     public User findByName(@Param("name") String name);
+    
+    @Query("SELECT u.followingSubjects FROM User u WHERE LOWER(u.name) = LOWER(:name)")
+    public List<Subject> findSubsByName(@Param("name") String name);
 }

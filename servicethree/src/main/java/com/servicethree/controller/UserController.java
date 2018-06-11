@@ -59,6 +59,18 @@ public class UserController {
         }
         return returnList;
     }
+    
+    // TEST URL: http://localhost:8094/users/getAllSubsByName?naam=Yannick
+    @RequestMapping(value = "/getAllSubsByName", method = RequestMethod.GET)
+    public List<Subject> getAllSubsByName(@RequestParam("naam") String naam) {
+        //refreshAanbevelingen(naam);
+        List<Subject> returnList = new ArrayList<>();
+        for(Subject s: userRepository.findSubsByName(naam))
+        {
+            returnList.add(s);
+        }
+        return returnList;
+    }
 
 ////     TEST URL: http://localhost:8094/users/refresh
 //    @RequestMapping(value = "/refresh", method = RequestMethod.GET)
