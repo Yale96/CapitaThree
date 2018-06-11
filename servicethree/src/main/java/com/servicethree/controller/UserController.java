@@ -118,4 +118,15 @@ public class UserController {
 //            }
 //        return u;
 //    }
+    
+    //TEST URL: http://localhost:8094/users/addSubjectToUser?name=Yannick&subject=Twee
+    @RequestMapping(value = "/addSubjectToUser", method = RequestMethod.POST)
+    public User subscribeToNews(@RequestParam("name") String name, @RequestParam("subject") String subject) {
+        User u = userRepository.findOne(userRepository.findByName(name).getId());
+        Subject s = subjectRepository.findOne(subjectRepository.findByName(subject).getId());
+        u.addSubject(s);
+        userRepository.save(u);
+        String ss = "Debug";
+        return u;
+    }
 }

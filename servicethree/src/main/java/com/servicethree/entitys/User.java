@@ -138,5 +138,15 @@ public class User implements Serializable {
         }
         return returnList;
     }
+
+    public List<Subject> addSubject(Subject n) {
+        List<Subject> returnList = getFollowingSubjects();
+        if(! returnList.contains(n) && getAge() >= n.getAgeLimit())
+        {
+            returnList.add(n);
+        }
+        setFollowingSubjects(returnList);
+        return returnList;
+    }
     
 }
