@@ -47,7 +47,7 @@ public class AanbevelingController {
         return aanbevelingRepository.findAll();
     }
 
-    //TEST URL: http://localhost:8094/aanbevelingen/create?toName=Yannick&fromName=Dennis&subjectName=Een&waarom=omdat ik je lief vindt
+    //TEST URL: http://localhost:8094/aanbevelingen/create?toName=Yannick&fromName=Dennis&subjectName=Sport&waarom=Omdat je van sport houdt
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public Aanbeveling createAanbeveling(@RequestParam("toName") String toName, @RequestParam("fromName") String fromName, @RequestParam("subjectName") String subjectName, @RequestParam("waarom") String waarom) {
         User to = userRepository.findByName(toName);
